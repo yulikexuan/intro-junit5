@@ -40,4 +40,48 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
     </properties>
+    
+    <profiles>
+
+        <profile>
+        
+            <!--This profile is activated when eclipse interacts with maven (using 
+                m2e). -->
+            <id>m2e</id>
+            
+            <activation>
+                <property>
+                    <name>m2e.version</name>
+                </property>
+            </activation>
+            
+            <build>
+                <plugins>
+                    <plugin>
+                        <!-- To solve:
+                             Eclipse do not support duplicated package-info.java, in both src and test. 
+                        -->
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>default-testCompile</id>
+                                <phase>test-compile</phase>
+                                <configuration>
+                                    <testExcludes>
+                                        <exclude>**/package-info.java</exclude>
+                                    </testExcludes>
+                                </configuration>
+                                <goals>
+                                    <goal>testCompile</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+            
+        </profile>
+
+    </profiles>
+    
 </project>
